@@ -1,0 +1,26 @@
+{
+  "name": "PongScreen",
+  "version": "0.0.0",
+  "authors": [
+    "Samuel Trangmar-Keates <samtkeates@gmail.com>"
+  ],
+  "description": "Pong start screen",
+  "main": "manifest.json",
+  "keywords": [
+    "pong",
+    "chrome",
+    "extension"
+  ],
+  "license": "MIT",
+  "homepage": "extrovert.io",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize.css": "~3.0.2"
+  }
+}

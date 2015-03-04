@@ -1,0 +1,14 @@
+{
+	"manifest_version": 2,
+
+	"name": "PongScreen",
+	"description": "Pong start screen",
+	"version": "0.0.0",
+	"chrome_url_overrides" : {
+    "newtab": "newtab.html"
+  },
+	"permissions": [
+		"activeTab",
+		"https://ajax.googleapis.com/"
+	]
+}
