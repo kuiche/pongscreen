@@ -72,3 +72,16 @@ body {
   left: -200px;
   border-radius: 20px;
 }
+
+.scoreboard {
+  position: absolute;
+  width: 100%;
+}
+
+.score {
+  float: right;
+  width: 50%;
+  text-align: center;
+  font-size: 4em;
+  font-weight: bold;
+}
