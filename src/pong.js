@@ -57,13 +57,17 @@ function Game(options) {
 
   [].forEach.call(this.bumpers, function(elem) {
     elem.up = function() {
-      if (elem.offsetTop > _this.board.offsetTop + _this.options.bumperSpeed){ 
+      if (elem.offsetTop > _this.board.offsetTop + _this.options.bumperSpeed){
         elem.style.top = (elem.offsetTop - _this.options.bumperSpeed) + "px";
+      } else {
+        elem.style.top = _this.board.offsetTop;
       }
     };
     elem.down = function() {
-      if (elem.offsetTop + elem.offsetHeight < _this.board.offsetTop + _this.board.offsetHeight - _this.options.bumperSpeed){ 
+      if (elem.offsetTop + elem.offsetHeight < _this.board.offsetTop + _this.board.offsetHeight - _this.options.bumperSpeed){
         elem.style.top = (elem.offsetTop + _this.options.bumperSpeed) + "px";
+      } else {
+        elem.style.top = _this.board.offsetTop + _this.board.offsetHeight - elem.offsetHeight;
       }
     };
   });
