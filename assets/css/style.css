@@ -79,7 +79,7 @@ body {
 }
 
 .score {
-  float: right;
+  float: left;
   width: 50%;
   text-align: center;
   font-size: 4em;
