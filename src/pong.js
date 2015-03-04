@@ -86,11 +86,12 @@ Game.prototype.run = function() {
     iteration = function() {
       // move ball
       ball.style.left = (ball.offsetLeft + ball.velocity[0]) + "px";
+      ball.style.top = (ball.offsetTop + ball.velocity[1]) + "px";
 
       _this.options.bumperHandlers.left.iteration(_this.bumpers[0]);
       _this.options.bumperHandlers.right.iteration(_this.bumpers[1]);
 
-      // detect collision
+      // detect bumper collision
       var bumperIndex = 0;
       if (
           (
@@ -106,11 +107,25 @@ Game.prototype.run = function() {
           && (bumperIndex = 1)
         )
           ) {
+        var ballOffset = ball.offsetTop + ball.offsetHeight/2,
+          bumperOffset = _this.bumpers[bumperIndex].offsetTop + _this.bumpers[bumperIndex].offsetHeight/2,
+          turn = (ballOffset - bumperOffset)/5
+        ;
+
         if (bumperIndex === 0) {
           ball.velocity[0] = Math.abs(ball.velocity[0]);
+          ball.velocity[1] += turn;
         } else {
           ball.velocity[0] = -Math.abs(ball.velocity[0]);
+          ball.velocity[1] += turn;
         }
+      }
+
+      // detect edge collision
+      if (ball.offsetTop <= _this.board.offsetTop) {
+        ball.velocity[1] = Math.abs(ball.velocity[0]);
+      } else if (ball.offsetTop + ball.offsetHeight >= _this.board.offsetTop + _this.board.offsetHeight) {
+        ball.velocity[1] = -Math.abs(ball.velocity[0]);
       }
     }
   ;
