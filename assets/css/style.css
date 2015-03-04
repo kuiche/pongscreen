@@ -51,6 +51,7 @@ body {
 .bumper {
   height: 200px;
   width: 30px;
+  top: calc(50% - 100px);
   background-color: #000;
   position: absolute;
 }
@@ -66,7 +67,8 @@ body {
 .ball {
   position: absolute;
   background-color: #181818;
-  height:50px;
-  width:50px;
-  border-radius: 25px;
+  height:40px;
+  width:40px;
+  left: -200px;
+  border-radius: 20px;
 }

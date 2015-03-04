@@ -31,8 +31,8 @@ KeyHandler.prototype.iteration = function(bumper) {
 
 function Game(options) {
   var defaultOptions = {
-      gameSpeed: 30,
-      initialVelocity: 30,
+      gameSpeed: 10,
+      initialVelocity: 10,
       bumperHandlers: {
         left: new KeyHandler({
           upKey: 87, // w
@@ -43,7 +43,7 @@ function Game(options) {
           downKey: 40 // down
         })
       },
-      bumperSpeed: 40
+      bumperSpeed: 20
     },
     _this = this
   ;
@@ -53,7 +53,7 @@ function Game(options) {
   this.bumpers = document.getElementsByClassName('bumper');
   this.ball = document.getElementById('ball');
   this.board = document.getElementById('gameboard');
-  this.turn = 0;
+  this.server = 0;
 
   [].forEach.call(this.bumpers, function(elem) {
     elem.up = function() {
@@ -81,16 +81,6 @@ Game.prototype.reset = function() {
 Game.prototype.run = function() {
   var _this = this,
     ball = this.ball,
-    resetBall = function() {
-      if (_this.turn == 0) {
-        ball.style.left = _this.bumpers[0].offsetWidth + "px";
-        ball.velocity = [_this.options.initialVelocity, 0];
-      } else {
-        ball.style.left = (_this.board.offsetWidth - _this.bumpers[1].offsetWidth - _this.ball.offsetWidth) + "px";
-        ball.velocity = [-1*_this.options.initialVelocity, 0];
-      }
-    },
-
     iteration = function() {
       // move ball
       ball.style.left = (ball.offsetLeft + ball.velocity[0]) + "px";
@@ -135,16 +125,64 @@ Game.prototype.run = function() {
       } else if (ball.offsetTop + ball.offsetHeight >= _this.board.offsetTop + _this.board.offsetHeight - _this.options.initialVelocity) {
         ball.velocity[1] = -Math.abs(ball.velocity[0]);
       }
+
+      // score condition
+      var roundEnd = false;
+      if (ball.offsetLeft <= _this.board.offsetLeft) {
+        _this.scores[1]++;
+        _this.server = 0;
+        roundEnd = true;
+      } else if (ball.offsetLeft + ball.offsetWidth >= _this.board.offsetLeft + _this.board.offsetWidth) {
+        _this.scores[0]++;
+        _this.server = 1;
+        roundEnd = true;
+      }
+
+      if (roundEnd) {
+        _this.updateScoreboard();
+        _this.newRound();
+      }
     }
   ;
 
-  resetBall();
-
-  window.setInterval(iteration, this.options.gameSpeed);
+  // call with anon function otherwise we get a crazy error
+  this.mainLoop = window.setInterval(function() { iteration() }, this.options.gameSpeed);
 };
 
-Game.prototype.stop = function () {
-  window.clearInterval();
+Game.prototype.stop = function() {
+  clearInterval(this.mainLoop);
+};
+
+Game.prototype.updateScoreboard = function() {
+  var scoreboards = document.getElementsByClassName('score');
+  this.scores.forEach(function(score, id) {
+    scoreboards[id].innerHTML = score;
+  });
+};
+
+Game.prototype.newRound = function() {
+  var _this = this,
+    ball = this.ball,
+    // ball to go in a kinda random direction
+    verticalV = Math.floor(Math.random() * 5) * (Math.random() < 0.5 ? 1 :-1)
+  ;
+
+  console.log(verticalV);
+  if (this.server == 0) {
+    ball.style.left = this.bumpers[0].offsetWidth + "px";
+    ball.velocity = [this.options.initialVelocity, verticalV];
+  } else {
+    ball.style.left = (this.board.offsetWidth - this.bumpers[1].offsetWidth - this.ball.offsetWidth) + "px";
+    ball.velocity = [-1*this.options.initialVelocity, verticalV];
+  }
+
+  ball.style.top = (this.bumpers[this.server].offsetTop
+    + this.bumpers[this.server].offsetHeight/2
+    - ball.offsetHeight/2) + "px";
+
+  clearInterval(this.mainLoop);
+
+  setTimeout(function() { _this.run() }, 300);
 };
 
 
@@ -157,5 +195,5 @@ startButton.onclick = function() {
   var game = new Game();
   game.reset();
 
-  game.run();
+  game.newRound();
 };
