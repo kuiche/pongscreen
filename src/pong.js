@@ -35,12 +35,12 @@ function Game(options) {
       initialVelocity: 30,
       bumperHandlers: {
         left: new KeyHandler({
-          upKey: 38,
-          downKey: 40
+          upKey: 87, // w
+          downKey: 83 // s
         }),
         right: new KeyHandler({
-          upKey: 38,
-          downKey: 40
+          upKey: 38, // up
+          downKey: 40 // down
         })
       },
       bumperSpeed: 40
@@ -67,7 +67,7 @@ function Game(options) {
       if (elem.offsetTop + elem.offsetHeight < _this.board.offsetTop + _this.board.offsetHeight - _this.options.bumperSpeed){
         elem.style.top = (elem.offsetTop + _this.options.bumperSpeed) + "px";
       } else {
-        elem.style.top = _this.board.offsetTop + _this.board.offsetHeight - elem.offsetHeight;
+        elem.style.top = (_this.board.offsetTop + _this.board.offsetHeight - elem.offsetHeight) + "px";
       }
     };
   });
@@ -84,10 +84,10 @@ Game.prototype.run = function() {
     resetBall = function() {
       if (_this.turn == 0) {
         ball.style.left = _this.bumpers[0].offsetWidth + "px";
-        ball.velocity = [_this.options.initialVelocity, 0]
+        ball.velocity = [_this.options.initialVelocity, 0];
       } else {
         ball.style.left = (_this.board.offsetWidth - _this.bumpers[1].offsetWidth - _this.ball.offsetWidth) + "px";
-        ball.velocity = [-1*_this.options.initialVelocity, 0]
+        ball.velocity = [-1*_this.options.initialVelocity, 0];
       }
     },
 
