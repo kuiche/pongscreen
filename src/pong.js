@@ -32,7 +32,7 @@ KeyHandler.prototype.iteration = function(bumper) {
 function Game(options) {
   var defaultOptions = {
       gameSpeed: 30,
-      initialVelocity: 15,
+      initialVelocity: 30,
       bumperHandlers: {
         left: new KeyHandler({
           upKey: 38,
@@ -43,7 +43,7 @@ function Game(options) {
           downKey: 40
         })
       },
-      bumperSpeed: 10
+      bumperSpeed: 40
     },
     _this = this
   ;
@@ -57,10 +57,14 @@ function Game(options) {
 
   [].forEach.call(this.bumpers, function(elem) {
     elem.up = function() {
-      elem.style.top = (elem.offsetTop - _this.options.bumperSpeed) + "px";
+      if (elem.offsetTop > _this.board.offsetTop + _this.options.bumperSpeed){ 
+        elem.style.top = (elem.offsetTop - _this.options.bumperSpeed) + "px";
+      }
     };
     elem.down = function() {
-      elem.style.top = (elem.offsetTop + _this.options.bumperSpeed) + "px";
+      if (elem.offsetTop + elem.offsetHeight < _this.board.offsetTop + _this.board.offsetHeight - _this.options.bumperSpeed){ 
+        elem.style.top = (elem.offsetTop + _this.options.bumperSpeed) + "px";
+      }
     };
   });
 };
@@ -122,9 +126,9 @@ Game.prototype.run = function() {
       }
 
       // detect edge collision
-      if (ball.offsetTop <= _this.board.offsetTop) {
+      if (ball.offsetTop <= _this.board.offsetTop + _this.options.initialVelocity) {
         ball.velocity[1] = Math.abs(ball.velocity[0]);
-      } else if (ball.offsetTop + ball.offsetHeight >= _this.board.offsetTop + _this.board.offsetHeight) {
+      } else if (ball.offsetTop + ball.offsetHeight >= _this.board.offsetTop + _this.board.offsetHeight - _this.options.initialVelocity) {
         ball.velocity[1] = -Math.abs(ball.velocity[0]);
       }
     }
