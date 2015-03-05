@@ -3,12 +3,10 @@
 
 	"name": "PongScreen",
 	"description": "Pong start screen",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"chrome_url_overrides" : {
     "newtab": "newtab.html"
   },
-	"permissions": [
-		"activeTab",
-		"https://ajax.googleapis.com/"
-	]
+  "icons": {"128": "icon.png"},
+	"permissions": []
 }
